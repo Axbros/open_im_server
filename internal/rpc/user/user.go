@@ -17,6 +17,7 @@ package user
 import (
 	"context"
 	"errors"
+	"fmt"
 	"math/rand"
 	"strings"
 	"sync"
@@ -262,13 +263,18 @@ func (s *userServer) UserRegister(ctx context.Context, req *pbuser.UserRegisterR
 		return nil, errs.ErrArgs.WrapMsg("users is empty")
 	}
 
-	if err = authverify.CheckAdmin(ctx, s.config.Share.IMAdminUserID); err != nil {
-		return nil, err
-	}
+	// if err = authverify.CheckAdmin(ctx, s.config.Share.IMAdminUserID); err != nil {
+	// 	return nil, err
+	// }
 
 	if datautil.DuplicateAny(req.Users, func(e *sdkws.UserInfo) string { return e.UserID }) {
 		return nil, errs.ErrArgs.WrapMsg("userID repeated")
 	}
+	total, err := s.db.CountTotal(ctx, nil) // use total+1 as nickname
+	if err != nil {
+		return nil, err
+	}
+
 	userIDs := make([]string, 0)
 	for _, user := range req.Users {
 		if user.UserID == "" {
@@ -279,6 +285,7 @@ func (s *userServer) UserRegister(ctx context.Context, req *pbuser.UserRegisterR
 		}
 		userIDs = append(userIDs, user.UserID)
 	}
+
 	exist, err := s.db.IsExist(ctx, userIDs)
 	if err != nil {
 		return nil, err
@@ -286,6 +293,8 @@ func (s *userServer) UserRegister(ctx context.Context, req *pbuser.UserRegisterR
 	if exist {
 		return nil, servererrs.ErrRegisteredAlready.WrapMsg("userID registered already")
 	}
+	req.Users[0].Nickname = fmt.Sprintf("%d", total+1)
+
 	if err := s.webhookBeforeUserRegister(ctx, &s.config.WebhooksConfig.BeforeUserRegister, req); err != nil {
 		return nil, err
 	}
