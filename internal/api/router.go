@@ -291,4 +291,5 @@ var Whitelist = []string{
 	"/auth/get_admin_token",
 	"/auth/parse_token",
 	"/msg/search_msg",
+	"/statistics/user/register",
 }
