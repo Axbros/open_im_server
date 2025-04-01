@@ -27,5 +27,5 @@ func (s *userServer) UserRegisterCount(ctx context.Context, req *pbuser.UserRegi
 		return nil, err
 	}
 	//TODO: chat 应该同步 应该只返回total
-	return &pbuser.UserRegisterCountResp{Total: total, Before: 0, Count: nil}, nil
+	return &pbuser.UserRegisterCountResp{Total: total}, nil
 }
