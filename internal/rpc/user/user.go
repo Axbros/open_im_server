@@ -270,7 +270,7 @@ func (s *userServer) UserRegister(ctx context.Context, req *pbuser.UserRegisterR
 	if datautil.DuplicateAny(req.Users, func(e *sdkws.UserInfo) string { return e.UserID }) {
 		return nil, errs.ErrArgs.WrapMsg("userID repeated")
 	}
-	total, err := s.db.CountTotal(ctx, nil) // use total+1 as nickname
+	total, err := s.db.CountTotal(ctx) // use total+1 as nickname
 	if err != nil {
 		return nil, err
 	}

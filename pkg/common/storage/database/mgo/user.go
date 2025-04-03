@@ -16,9 +16,10 @@ package mgo
 
 import (
 	"context"
+	"time"
+
 	"github.com/openimsdk/open-im-server/v3/pkg/common/storage/database"
 	"github.com/openimsdk/open-im-server/v3/pkg/common/storage/model"
-	"time"
 
 	"github.com/openimsdk/protocol/user"
 	"github.com/openimsdk/tools/db/mongoutil"
@@ -137,11 +138,8 @@ func (u *UserMgo) GetUserGlobalRecvMsgOpt(ctx context.Context, userID string) (o
 	return mongoutil.FindOne[int](ctx, u.coll, bson.M{"user_id": userID}, options.FindOne().SetProjection(bson.M{"_id": 0, "global_recv_msg_opt": 1}))
 }
 
-func (u *UserMgo) CountTotal(ctx context.Context, before *time.Time) (count int64, err error) {
-	if before == nil {
-		return mongoutil.Count(ctx, u.coll, bson.M{})
-	}
-	return mongoutil.Count(ctx, u.coll, bson.M{"create_time": bson.M{"$lt": before}})
+func (u *UserMgo) CountTotal(ctx context.Context) (count int64, err error) {
+	return mongoutil.Count(ctx, u.coll, bson.M{})
 }
 
 func (u *UserMgo) AddUserCommand(ctx context.Context, userID string, Type int32, UUID string, value string, ex string) error {

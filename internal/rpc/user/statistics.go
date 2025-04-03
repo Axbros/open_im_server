@@ -22,10 +22,10 @@ import (
 
 func (s *userServer) UserRegisterCount(ctx context.Context, req *pbuser.UserRegisterCountReq) (*pbuser.UserRegisterCountResp, error) {
 
-	total, err := s.db.CountTotal(ctx, nil)
+	total, err := s.db.CountTotal(ctx)
+
 	if err != nil {
 		return nil, err
 	}
-	//TODO: chat 应该同步 应该只返回total
 	return &pbuser.UserRegisterCountResp{Total: total}, nil
 }

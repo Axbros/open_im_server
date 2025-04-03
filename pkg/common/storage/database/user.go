@@ -16,10 +16,11 @@ package database
 
 import (
 	"context"
+	"time"
+
 	"github.com/openimsdk/open-im-server/v3/pkg/common/storage/model"
 	"github.com/openimsdk/protocol/user"
 	"github.com/openimsdk/tools/db/pagination"
-	"time"
 )
 
 type User interface {
@@ -36,7 +37,7 @@ type User interface {
 	GetAllUserID(ctx context.Context, pagination pagination.Pagination) (count int64, userIDs []string, err error)
 	GetUserGlobalRecvMsgOpt(ctx context.Context, userID string) (opt int, err error)
 	// Get user total quantity
-	CountTotal(ctx context.Context, before *time.Time) (count int64, err error)
+	CountTotal(ctx context.Context) (count int64, err error)
 	// Get user total quantity every day
 	CountRangeEverydayTotal(ctx context.Context, start time.Time, end time.Time) (map[string]int64, error)
 

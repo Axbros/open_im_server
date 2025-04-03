@@ -58,7 +58,7 @@ type UserDatabase interface {
 	// InitOnce Inside the function, first query whether it exists in the storage, if it exists, do nothing; if it does not exist, insert it
 	InitOnce(ctx context.Context, users []*model.User) (err error)
 	// CountTotal Get the total number of users
-	CountTotal(ctx context.Context, before *time.Time) (int64, error)
+	CountTotal(ctx context.Context) (int64, error)
 	// CountRangeEverydayTotal Get the user increment in the range
 	CountRangeEverydayTotal(ctx context.Context, start time.Time, end time.Time) (map[string]int64, error)
 
@@ -196,8 +196,9 @@ func (u *userDatabase) GetUserByID(ctx context.Context, userID string) (user *mo
 }
 
 // CountTotal Get the total number of users.
-func (u *userDatabase) CountTotal(ctx context.Context, before *time.Time) (count int64, err error) {
-	return u.userDB.CountTotal(ctx, before)
+func (u *userDatabase) CountTotal(ctx context.Context) (count int64, err error) {
+	return u.userDB.CountTotal(ctx)
+
 }
 
 // CountRangeEverydayTotal Get the user increment in the range.
