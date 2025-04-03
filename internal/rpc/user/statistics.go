@@ -27,5 +27,6 @@ func (s *userServer) UserRegisterCount(ctx context.Context, req *pbuser.UserRegi
 	if err != nil {
 		return nil, err
 	}
-	return &pbuser.UserRegisterCountResp{Total: total}, nil
+	return &pbuser.UserRegisterCountResp{Total: total, Before: 0, Count: nil}, nil
+
 }
