@@ -242,6 +242,7 @@ func newGinRouter(disCov discovery.SvcDiscoveryRegistry, config *Config) *gin.En
 
 	statisticsGroup := r.Group("/statistics")
 	{
+		//TODO:用户注册时候填好正确的昵称
 		statisticsGroup.POST("/user/register", u.UserRegisterCount)
 		statisticsGroup.POST("/user/active", m.GetActiveUser)
 		statisticsGroup.POST("/group/create", g.GroupCreateCount)
