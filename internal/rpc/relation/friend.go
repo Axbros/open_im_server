@@ -315,10 +315,12 @@ func (s *friendServer) GetDesignatedFriendsApply(ctx context.Context,
 		return nil, err
 	}
 	resp = &relation.GetDesignatedFriendsApplyResp{}
+
 	resp.FriendRequests, err = convert.FriendRequestDB2Pb(ctx, friendRequests, s.userRpcClient.GetUsersInfoMap)
 	if err != nil {
 		return nil, err
 	}
+	// {fromUserID:"6551171727" fromNickname:"3" toUserID:"6274318139" toNickname:"44" reqMsg:"123" createTime:1743834646883}
 	return resp, nil
 }
 
